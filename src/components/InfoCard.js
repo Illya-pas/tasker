@@ -57,7 +57,7 @@ export default function InfoCard({fetchedCard, getItem}) {
   const classes = useStyles();
   const dispatch = useDispatch()
 
-  const isAuth = useSelector(state => state.auth.isAuth)
+  const isAuth = useSelector(state => state.app.isAuth)
 
 
   const escapeHtml = (text) => {
@@ -121,12 +121,14 @@ export default function InfoCard({fetchedCard, getItem}) {
     setChangeValue(false)
 
     let changeInfo = await dispatch(changer(formdata, fetchedCard.id))
-    if (changeInfo.status === "ok") {
-      setTextValue(cardValue)
-      setIsChanged(true)
-    } else {
-      localStorage.removeItem("token")
-      dispatch(redirect("login"))
+    if (changeInfo) {
+      if (changeInfo.status === "ok") {
+        setTextValue(cardValue)
+        setIsChanged(true)
+      } else {
+        localStorage.removeItem("token")
+        dispatch(redirect("login"))
+      }
     }
   }
 

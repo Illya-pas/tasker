@@ -52,13 +52,15 @@ export default function Login() {
 		formdata.append("password", data.password);
 
 		let info = await dispatch(authUser(formdata))
-		if (info.status === "error") {
-			setResponseInfo(info.message)
-			await sleep(5000)
-			setResponseInfo("")
-		} else {
-			localStorage.setItem('token', info.message.token)
-			redirect("")
+		if (info) {
+			if (info.status === "error") {
+				setResponseInfo(info.message)
+				await sleep(5000)
+				setResponseInfo("")
+			} else {
+				localStorage.setItem('token', info.message.token)
+				redirect("")
+			}
 		}
   }
 

@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux'
 import {cardReducer} from './cardReducer'
-import {authReducer} from './authReducer'
+import {appReducer} from './appReducer'
 
 export const rootReducer = combineReducers({
 	cards: cardReducer,
-	auth: authReducer,
+	app: appReducer,
 })

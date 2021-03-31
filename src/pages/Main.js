@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import InfoCard from '../components/InfoCard'
 import Header from "../components/Header"
@@ -6,7 +6,6 @@ import Form from "../components/Form"
 import { makeStyles } from "@material-ui/core/styles"
 import Pagination from "../components/Pagination"
 import {fetchCards, setIsAuth} from '../redux/actions'
-import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles({
   form: {
@@ -39,16 +38,6 @@ const useStyles = makeStyles({
   	display: "inline-block",
   	marginTop: 20,
   	marginLeft: -20
-  },
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    width: "100%",
-    position: "absolute",
-    bottom: 40,
-  },
-  alert: {
-    width: 280
   }
 })
 
@@ -56,10 +45,8 @@ const Main = () => {
   const classes = useStyles();
   const dispatch = useDispatch()
 
-  const [showAlert, setShowAlert] = useState(false)
-
 	const fetchedCards = useSelector(state => state.cards.cards)
-  const isAuth = useSelector(state => state.auth.isAuth)
+  const isAuth = useSelector(state => state.app.isAuth)
 	const sort = useSelector(state => state.cards.filters)
 
 	const getItem = () => {
@@ -81,7 +68,7 @@ const Main = () => {
 			<Header isAuth={isAuth} setAuth={data => setAuth(data)}/>
 			<div className={classes.content}>
 				<div className={classes.form}>
-          <Form setShowAlert={setShowAlert} getItem={getItem}/>
+          <Form getItem={getItem}/>
         </div>
 				<div className={classes.cardsPages}>
 					<div className={classes.cards}>
@@ -92,11 +79,6 @@ const Main = () => {
 					<Pagination getItem={getItem}/>
 				</div>
 			</div>
-      {showAlert && <div className={classes.container}>
-        <Alert className={classes.alert} 
-          variant="filled"
-          severity="success">Task successfully created!</Alert>
-        </div>}
 		</div>
 	)
 }

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useForm } from "react-hook-form";
 import {useDispatch} from 'react-redux'
-import {createCard, sleep} from '../redux/actions'
+import {createCard, sleep, showAlert} from '../redux/actions'
 import { makeStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import { FormHelperText } from "@material-ui/core";
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function Form({getItem, setShowAlert}) {
+export default function Form({getItem}) {
   const classes = useStyles();
   const dispatch = useDispatch()
 
@@ -44,16 +44,16 @@ export default function Form({getItem, setShowAlert}) {
 		formdata.append("username", data.username);
 
 		let info = await dispatch(createCard(formdata))
-		if (info.status === "error") {
-			setResponseInfo(info.message)
-			await sleep(5000)
-			setResponseInfo("")
-		} else {
-			getItem()
-			e.target.reset()
-			setShowAlert(true)
-			await sleep(3000)
-			setShowAlert(false)
+		if (info) {
+			if (info.status === "error") {
+				setResponseInfo(info.message)
+				await sleep(5000)
+				setResponseInfo("")
+			} else {
+				getItem()
+				e.target.reset()
+				dispatch(showAlert("success", "Task successfully created!"))
+			}
 		}
   }
 
