@@ -59,6 +59,16 @@ export default function InfoCard({fetchedCard, getItem}) {
 
   const isAuth = useSelector(state => state.auth.isAuth)
 
+
+  const escapeHtml = (text) => {
+    return text
+         .replace(/&amp;/g, "&")
+         .replace(/&lt;/g, "<")
+         .replace(/&gt;/g, ">")
+         .replace(/&quot;/g, '"')
+         .replace(/&#039;/g, "'");
+ }
+
   const [isComplete, setIsComplete] = useState(fetchedCard.status === 10 || fetchedCard.status === 11)
   const [isChanged, setIsChanged] = useState(fetchedCard.status === 1 || fetchedCard.status === 11)
   const [changeValue, setChangeValue] = useState(false)
@@ -149,13 +159,13 @@ export default function InfoCard({fetchedCard, getItem}) {
           ?
           <ClickAwayListener onClickAway={handleClickAway}>
             <textarea cols="28" rows="5" type="text" 
-              value={cardValue}
+              value={escapeHtml(cardValue)}
               onChange={handleChange}>
             </textarea>
           </ClickAwayListener>
           :
           <Typography className={classes.text} variant="body2" component="p">
-            {textValue}
+            {escapeHtml(textValue)}
           </Typography>
         }
       </CardContent>
